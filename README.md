@@ -1,5 +1,5 @@
 # logging-cpp
-Demonstration using git submodules, premake and spdlog.
+Demonstration using git submodules, premake5, precompiled headers & spdlog.
 
 ## Using G++
 ```bash
