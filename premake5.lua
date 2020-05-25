@@ -10,10 +10,10 @@ project "LoggingCpp"
     targetdir "bin/%{cfg.buildcfg}"
     
     pchheader "src/pch.hpp"
-    files { "src/**.cpp" }
+    files { "src/main.cpp" }
 
     includedirs {
-        "vendor/spdlog/include/"
+        "src/vendor/spdlog/include/"
     }
 
     filter "configurations:Debug"

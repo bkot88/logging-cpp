@@ -18,7 +18,7 @@ ifeq ($(config),debug)
   PCH = src/pch.hpp
   GCH = $(OBJDIR)/$(notdir $(PCH)).gch
   DEFINES += -DDEBUG
-  INCLUDES += -Ivendor/spdlog/include
+  INCLUDES += -Isrc/vendor/spdlog/include
   FORCE_INCLUDE += -include $(OBJDIR)/$(notdir $(PCH))
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -g
@@ -47,7 +47,7 @@ ifeq ($(config),release)
   PCH = src/pch.hpp
   GCH = $(OBJDIR)/$(notdir $(PCH)).gch
   DEFINES += -DNDEBUG
-  INCLUDES += -Ivendor/spdlog/include
+  INCLUDES += -Isrc/vendor/spdlog/include
   FORCE_INCLUDE += -include $(OBJDIR)/$(notdir $(PCH))
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -O2
