@@ -12,21 +12,19 @@ endif
 
 ifeq ($(config),debug)
   RESCOMP = windres
-  TARGETDIR = bin/Debug
-  TARGET = $(TARGETDIR)/LoggingCpp
-  OBJDIR = obj/Debug
-  PCH = src/pch.hpp
-  GCH = $(OBJDIR)/$(notdir $(PCH)).gch
-  DEFINES += -DDEBUG
-  INCLUDES += -Isrc/vendor/spdlog/include
-  FORCE_INCLUDE += -include $(OBJDIR)/$(notdir $(PCH))
+  TARGETDIR = bin/debug
+  TARGET = $(TARGETDIR)/LoggingApp
+  OBJDIR = obj/debug
+  DEFINES += -DSPDLOG_COMPILED_LIB -DDEBUG
+  INCLUDES += -Ivendor/spdlog/include
+  FORCE_INCLUDE +=
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
-  ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -g
-  ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -g
+  ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -g
+  ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -g
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  LIBS +=
+  LIBS += -lspdlog -lpthread
   LDDEPS +=
-  ALL_LDFLAGS += $(LDFLAGS)
+  ALL_LDFLAGS += $(LDFLAGS) -Llib -L/usr/lib64 -m64
   LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
   define PREBUILDCMDS
   endef
@@ -41,21 +39,19 @@ endif
 
 ifeq ($(config),release)
   RESCOMP = windres
-  TARGETDIR = bin/Release
-  TARGET = $(TARGETDIR)/LoggingCpp
-  OBJDIR = obj/Release
-  PCH = src/pch.hpp
-  GCH = $(OBJDIR)/$(notdir $(PCH)).gch
-  DEFINES += -DNDEBUG
-  INCLUDES += -Isrc/vendor/spdlog/include
-  FORCE_INCLUDE += -include $(OBJDIR)/$(notdir $(PCH))
+  TARGETDIR = bin/release
+  TARGET = $(TARGETDIR)/LoggingApp
+  OBJDIR = obj/release
+  DEFINES += -DSPDLOG_COMPILED_LIB -DNDEBUG
+  INCLUDES += -Ivendor/spdlog/include
+  FORCE_INCLUDE +=
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
-  ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -O2
-  ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -O2
+  ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -O2
+  ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -O2
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  LIBS +=
+  LIBS += -lspdlog -lpthread
   LDDEPS +=
-  ALL_LDFLAGS += $(LDFLAGS) -s
+  ALL_LDFLAGS += $(LDFLAGS) -Llib -L/usr/lib64 -m64 -s
   LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
   define PREBUILDCMDS
   endef
@@ -81,7 +77,7 @@ ifeq (.exe,$(findstring .exe,$(ComSpec)))
 endif
 
 $(TARGET): $(GCH) ${CUSTOMFILES} $(OBJECTS) $(LDDEPS) $(RESOURCES) | $(TARGETDIR)
-	@echo Linking LoggingCpp
+	@echo Linking LoggingApp
 	$(SILENT) $(LINKCMD)
 	$(POSTBUILDCMDS)
 
@@ -104,7 +100,7 @@ else
 endif
 
 clean:
-	@echo Cleaning LoggingCpp
+	@echo Cleaning LoggingApp
 ifeq (posix,$(SHELLTYPE))
 	$(SILENT) rm -f  $(TARGET)
 	$(SILENT) rm -rf $(OBJDIR)
